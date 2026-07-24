@@ -4,7 +4,7 @@
       "command": "uv",
       "args": ["run", "--with", "mcp", "python", "scopeprobe_mcp.py"],
       "env": {
-        "WAVEGATE_CAPTURE": "C:/Users/Administrator/.agit_lab/WaveGate/native/wavegate-capture/build-sigrok/Release/wavegate-capture.exe"
+        "WAVEGATE_CAPTURE": "C:/path/to/WaveGate/native/wavegate-capture/build-sigrok/Release/wavegate-capture.exe"
       }
     }
   }

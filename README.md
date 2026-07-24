@@ -2,7 +2,7 @@
 
 让 AI 经 **MCP** 读 **DreamSourceLab DSCope**(如 DSCope U3P100)的电压/波形——用于数字电源等硬件的**在线自测与采样校准**。
 
-配合 [MultiProbeFlash MCP](https://gitlab.blector.com/songrsp/multi-dev-assistant)(烧录/SWD/RTT/串口)成套:一个管**烧录+调试**,一个管**示波器测量**,AI 可闭环「改码→编译→烧录→RTT/串口验证→示波器量电压」。
+配合配套的 **MultiProbeFlash MCP**(烧录/SWD/RTT/串口)成套:一个管**烧录+调试**,一个管**示波器测量**,AI 可闭环「改码→编译→烧录→RTT/串口验证→示波器量电压」。
 
 ## 为什么单独做
 
@@ -11,7 +11,7 @@
   - [KenosInc/sigrok-mcp-server](https://github.com/KenosInc/sigrok-mcp-server)(Go,包 sigrok-cli,偏逻辑分析/协议解码)
   - [MagnusJohansson/siglent-sds-mcp](https://github.com/magnusjohansson/siglent-sds-mcp)、[lxkang00/oscilloscope-mcp](https://glama.ai/mcp/servers/lxkang00/oscilloscope-mcp)(Python,SCPI 网口控 Siglent)
   - Rigol DHO / Digilent WaveForms 等
-- 本 server 直接包 [WaveGate](.) 的原生采集器 `wavegate-capture`(sigrok4dsl 后端,已驱动 DSCope),把测量暴露成 MCP。
+- 本 server 直接包 WaveGate 的原生采集器 `wavegate-capture`(sigrok4dsl 后端,已驱动 DSCope),把测量暴露成 MCP。
 
 ## 工具
 
@@ -60,4 +60,8 @@ Claude Code `.mcp.json`:
 
 ## 开发约定
 
-沿用 MultiProbeFlash 的「[功能必进 MCP](https://gitlab.blector.com/songrsp/multi-dev-assistant)」：新增采集/测量能力都在此暴露对应 MCP 工具。
+沿用配套 MultiProbeFlash 的「功能必进 MCP」：新增采集/测量能力都在此暴露对应 MCP 工具。
+
+## License
+
+MIT —— 见 [LICENSE](LICENSE)。
