@@ -18,7 +18,7 @@
 | 工具 | 说明 |
 |---|---|
 | `scope_scan` | 扫描 DSCope 设备(model/serial/通道) |
-| `scope_measure_dc(channel, samples, samplerate)` | 采通道 → 算 **DC 电压**(中位码值→电压);带 `clipping`/`hint` 自适应量程提示 |
+| `scope_measure_dc(channel, vdiv_mv, samples, samplerate)` | 采通道 → 算 **DC 电压**(中位码值→电压);`vdiv_mv=0` 自动切档(1V/2V/5V per div),带 `tried`/`clipping`/`hint` |
 | `scope_capture_stats(channel, ...)` | 采波形返回码值统计(min/max/mean/median/峰峰),快速看信号在不在/抖不抖 |
 
 ## DC 电压换算
@@ -31,11 +31,14 @@ V = (hw_offset - code) * (vdiv_mv * vfactor * 10) / (ref_max - ref_min) / 1000
 
 标定常数(`vdiv_mv/hw_offset/ref_min/ref_max`)从 `wavegate-capture acquire` 输出读,**vdiv 跟随 DSCope 当前档位**。1V/div 时量程约 ±5V。
 
-### 自适应量程
+### 自动切档量程
 
-`scope_measure_dc` 检测码值是否贴近量程边界(`ref_min/ref_max ±2`):贴边 → `clipping=True` + 提示。
-量 >±5V(如 12V 输入)需把该通道 vdiv 调到 2V/div 以上——**当前 wavegate-capture 跟随设备档位,vdiv 在 DSView 里设**。
-> 路线图:给 `wavegate-capture` 加 `--vdiv` 让 MCP 全自动切档(现为半自动:检测+提示)。
+`scope_measure_dc(channel, vdiv_mv=0, ...)`:
+- `vdiv_mv=0`（默认）→ **自动切档**:依次试 1V/2V/5V per div，取不贴量程边界（`ref_min/ref_max ±2`）的那档。量 ~12V 输入会自动切到 2V/div。
+- `vdiv_mv>0` → 固定该档（mV/div）。
+- 返回带 `tried`（各档尝试）、`clipping`、`hint`。
+
+> **依赖 `wavegate-capture` 支持 `--vdiv`**（本仓库配套的 WaveGate 已加该参数）。若用的是旧版 `wavegate-capture`（不认 `--vdiv`），它会忽略该参数、维持设备当前档位，自动切档退化为"检测+提示"，此时 >±5V 需在 DSView 手动调大 vdiv。
 
 ## 依赖 & 配置
 
